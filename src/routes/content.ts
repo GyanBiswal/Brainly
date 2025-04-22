@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { ContentModel } from "../models/db";
 import { z } from "zod";
+import { userMiddleware } from "../middlewares";
 
 const router = express.Router();
 
@@ -8,17 +9,16 @@ const contentSchema = z.object({
   title: z.string().min(1),
   link: z.string().url(),
   tags: z.array(z.string()).optional(),
-  userId: z.string().min(1),
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", userMiddleware, async (req: Request, res: Response) => {
   try {
     const validated = contentSchema.parse(req.body);
     const content = await ContentModel.create({
       title: validated.title,
       link: validated.link,
       tags: validated.tags || [],
-      userId: validated.userId,
+      userId: req.userId,
     });
 
     res.status(201).json({

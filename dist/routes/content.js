@@ -15,21 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const db_1 = require("../models/db");
 const zod_1 = require("zod");
+const middlewares_1 = require("../middlewares");
 const router = express_1.default.Router();
 const contentSchema = zod_1.z.object({
     title: zod_1.z.string().min(1),
     link: zod_1.z.string().url(),
     tags: zod_1.z.array(zod_1.z.string()).optional(),
-    userId: zod_1.z.string().min(1),
 });
-router.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/", middlewares_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const validated = contentSchema.parse(req.body);
         const content = yield db_1.ContentModel.create({
             title: validated.title,
             link: validated.link,
             tags: validated.tags || [],
-            userId: validated.userId,
+            userId: req.userId,
         });
         res.status(201).json({
             message: "Content created successfully",
