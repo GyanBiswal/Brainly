@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import authRoutes from "./routes/auth";
 import contentRoutes from "./routes/content";
+import shareRoutes from "./routes/share"
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/content", contentRoutes);
+app.use("/api/v1/share", shareRoutes);
 
 async function main() {
   try {
