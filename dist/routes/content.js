@@ -21,6 +21,7 @@ const contentSchema = zod_1.z.object({
     title: zod_1.z.string().min(1),
     link: zod_1.z.string().url(),
     tags: zod_1.z.array(zod_1.z.string()).optional(),
+    type: zod_1.z.enum(["youtube", "twitter", "documents", "links"]),
 });
 router.post("/", middlewares_1.userMiddleware, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -29,6 +30,7 @@ router.post("/", middlewares_1.userMiddleware, (req, res) => __awaiter(void 0, v
             title: validated.title,
             link: validated.link,
             tags: validated.tags || [],
+            type: validated.type,
             userId: req.userId,
         });
         res.status(201).json({

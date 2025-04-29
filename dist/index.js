@@ -17,10 +17,16 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const content_1 = __importDefault(require("./routes/content"));
 const share_1 = __importDefault(require("./routes/share"));
+const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
+app.use((0, cors_1.default)({
+    origin: 'http://localhost:5173', // Allow only your frontend's URL
+    methods: 'GET,POST,PUT,DELETE', // Allowed HTTP methods
+    allowedHeaders: 'Content-Type,Authorization' // Allow specific headers (optional)
+}));
 app.use("/api/v1/auth", auth_1.default);
 app.use("/api/v1/content", content_1.default);
 app.use("/api/v1/share", share_1.default);

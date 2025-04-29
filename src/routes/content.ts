@@ -9,6 +9,7 @@ const contentSchema = z.object({
   title: z.string().min(1),
   link: z.string().url(),
   tags: z.array(z.string()).optional(),
+  type: z.enum(["youtube", "twitter", "documents", "links"]),
 });
 
 router.post("/", userMiddleware, async (req: Request, res: Response) => {
@@ -18,6 +19,7 @@ router.post("/", userMiddleware, async (req: Request, res: Response) => {
       title: validated.title,
       link: validated.link,
       tags: validated.tags || [],
+      type: validated.type,
       userId: req.userId,
     });
 

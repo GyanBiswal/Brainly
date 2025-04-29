@@ -9,6 +9,7 @@ const ContentSchema = new Schema({
     title: String,
     link: String,
     tags: [String],
+    type: { type: String, enum: ['youtube', 'twitter', 'documents', 'links'], required: true },
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true}
 })
 
